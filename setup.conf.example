@@ -1,0 +1,112 @@
+#!/bin/sh
+# =====================================================================
+#  setup.conf - the ONLY file you need to edit
+#
+#  Copy it first:      cp setup.conf.example setup.conf
+#  Then edit it:       nano setup.conf
+#  Then run:           ./deploy.sh check
+# =====================================================================
+
+
+# =====================================================================
+#  PART 1 - HOW TO REACH YOUR TWO ROUTERS  (you MUST fill this in)
+# =====================================================================
+# Both routers need SSH turned on. If you have not done that yet, see
+# "Turn on SSH" in README.md. It takes one minute per router.
+#
+# You can use a host name or an IP address.
+# Use the address that works from the computer you run this on.
+
+# ---- Router A ----
+ROUTER_A_HOST="router-a.example.com"
+ROUTER_A_USER="admin"
+ROUTER_A_PORT="22"
+
+# ---- Router B ----
+ROUTER_B_HOST="router-b.example.com"
+ROUTER_B_USER="admin"
+ROUTER_B_PORT="22"
+
+# Optional: path to an SSH private key file.
+# Leave empty to use your default key or to type a password.
+SSH_KEY=""
+
+
+# =====================================================================
+#  PART 2 - THE RADIO LINK  (good defaults, change only if you want)
+# =====================================================================
+
+# Which radio carries the bridge.
+#   wl0 = 2.4 GHz -> slower, but goes through walls much better.
+#                    Best choice for most homes. Start here.
+#   wl1 = 5 GHz   -> faster, but weak through walls.
+#
+# WARNING: the radio you pick stops working as a normal Wi-Fi network
+# for your phones, printers and smart home devices. Please read
+# docs/SECURITY.md before you decide.
+RADIO="wl0"
+
+# Wi-Fi channel. Both routers will use this same channel.
+# Leave it as "auto" and deploy.sh will scan the air and pick the
+# quietest channel for you. Or set a number like 1, 6, 11 or 13.
+CHANNEL="auto"
+
+# Channel width in MHz.
+#   20 -> slower, but much more stable. Recommended. Start here.
+#   40 -> about twice as fast, but drops more often on 2.4 GHz.
+BANDWIDTH="20"
+
+
+# =====================================================================
+#  PART 3 - THE LINK NETWORK  (safe defaults, usually leave as is)
+# =====================================================================
+# A tiny private network that ONLY the two routers use.
+# It is not your home network. Nothing else should use these addresses.
+# Change it only if you already use 192.168.255.x somewhere.
+LINK_IP_A="192.168.255.1"
+LINK_IP_B="192.168.255.2"
+
+# Name of the new bridge that carries the link.
+# Never use br0 (your home network) or br1/br2 (ASUS guest networks).
+BRIDGE_NAME="br10"
+
+
+# =====================================================================
+#  PART 4 - SECURITY  (keep all of these on "yes")
+# =====================================================================
+# The bridge radio must run with NO password. That is not a choice -
+# ASUS hardware refuses to build the link with WPA2. We tested it.
+# The options below protect you anyway. docs/SECURITY.md explains how.
+
+# Keep the open radio out of your home bridge.
+# If someone connects to it, they land nowhere: no address, no access.
+ISOLATE_AP_BSS="yes"
+
+# Only allow the other router's MAC address on the bridge radio.
+ENABLE_MAC_FILTER="yes"
+
+# Hide the network name of the bridge radio.
+HIDE_SSID="yes"
+
+# Turn off AiMesh. AiMesh controls the channel and will keep moving it,
+# and then the link never comes up. Keep this "yes".
+DISABLE_AIMESH="yes"
+
+
+# =====================================================================
+#  PART 5 - ADVANCED  (you can ignore this section)
+# =====================================================================
+# How often the self-repair job runs, in minutes.
+CHECK_INTERVAL_MINUTES="1"
+
+# Write messages to the router system log.
+ENABLE_LOGGING="yes"
+
+# Reboot both routers at the end of the install.
+# "ask" = ask you first. "yes" = always. "no" = never.
+REBOOT_AFTER_INSTALL="ask"
+
+# Leave empty for normal use.
+# Set this only if another tool (for example a VPN) should handle
+# routing instead of this bridge.
+ROUTE_OVERRIDE=""

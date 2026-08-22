@@ -1,0 +1,6 @@
+# Every .sh file here is copied to the router and run by BusyBox ash.
+# That shell cannot read CRLF line endings. A checkout on Windows makes
+# scripts that stop with "syntax error: unexpected word" before they run
+# a single line. Force LF, so the files work wherever they come from.
+*.sh               text eol=lf
+setup.conf.example text eol=lf
