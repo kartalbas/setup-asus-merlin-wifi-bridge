@@ -1,0 +1,11 @@
+# Your own settings - never commit these, they hold your addresses
+setup.conf
+
+# Editor and OS noise
+*.swp
+*~
+.DS_Store
+
+# Your own scripts and extra config files - not part of the project
+.migration/
+setup.conf.*
